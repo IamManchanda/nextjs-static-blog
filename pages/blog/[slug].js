@@ -4,7 +4,7 @@ import Head from "next/head";
 import path from "path";
 import marked from "marked";
 import { Fragment } from "react";
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 
 function Post({ contentWithHtmlMarkup, data }) {
   return (
@@ -23,15 +23,11 @@ function Post({ contentWithHtmlMarkup, data }) {
 
 export async function getStaticPaths() {
   const files = fs.readdirSync("posts");
-  console.log(JSON.stringify({ files }, null, 2));
-
   const paths = files.map((filename) => ({
     params: {
       slug: filename.replace(".md", ""),
     },
   }));
-  console.log(JSON.stringify({ paths }, null, 2));
-
   return {
     paths,
     fallback: false,

@@ -1,9 +1,10 @@
+import fs from "fs";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import { Fragment } from "react";
 
-export default function Home() {
+function Home({ postSlugs }) {
   return (
     <Fragment>
       <Head>
@@ -20,13 +21,27 @@ export default function Home() {
 
       <p className={styles.description}>
         <ol>
-          <li>
-            <Link href="/faq">
-              <a>Go to FAQ.</a>
-            </Link>
-          </li>
+          {postSlugs.map((slug) => (
+            <li key={slug}>
+              <Link href={`/blog/${slug}`}>
+                <a>{`/blog/${slug}`}</a>
+              </Link>
+            </li>
+          ))}
         </ol>
       </p>
     </Fragment>
   );
 }
+
+export async function getStaticProps() {
+  const files = fs.readdirSync("posts");
+
+  return {
+    props: {
+      postSlugs: files.map((filename) => filename.replace(".md", "")),
+    },
+  };
+}
+
+export default Home;
